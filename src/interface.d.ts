@@ -1,6 +1,6 @@
 export interface ReadmeData {
     rootPath: string;
-    repo: string;
+    repo: string | null;
     version: string;
     license: string;
     techs: string[];
