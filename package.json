@@ -2,7 +2,7 @@
   "name": "quick-readme",
   "displayName": "QuickReadme",
   "description": "VS Code extension to auto-generate README.md with proyect  structure and techs  ",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "publisher": "jochylazala",
   "icon": "./images/icon.png",
   "engines": {
