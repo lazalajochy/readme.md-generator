@@ -100,22 +100,81 @@ function detectTechnologies(rootPath) {
     if (fs.existsSync(pkgPath)) {
         const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
         const deps = { ...pkg.dependencies, ...pkg.devDependencies };
+        // 1️⃣ Frameworks y librerías frontend
         if (deps["react"])
             techs.push("React");
+        if (deps["react-dom"])
+            techs.push("React DOM");
+        if (deps["vue"])
+            techs.push("Vue.js");
+        if (deps["angular"])
+            techs.push("Angular");
+        if (deps["svelte"])
+            techs.push("Svelte");
         if (deps["next"])
             techs.push("Next.js");
+        if (deps["nuxt"])
+            techs.push("Nuxt.js");
+        if (deps["gatsby"])
+            techs.push("Gatsby");
+        if (deps["typescript"])
+            techs.push("TypeScript");
+        //2️⃣ Frameworks y librerías backend
         if (deps["express"])
             techs.push("Express");
+        if (deps["koa"])
+            techs.push("Koa");
+        if (deps["fastify"])
+            techs.push("Fastify");
         if (deps["nestjs"])
             techs.push("NestJS");
+        if (deps["hapi"])
+            techs.push("Hapi");
+        // DB
+        if (deps["pg"])
+            techs.push("PostgreSQL");
+        if (deps["mysql"])
+            techs.push("MySQL");
+        if (deps["mongodb"])
+            techs.push("MongoDB");
+        if (deps["sqlite3"])
+            techs.push("SQLite");
         if (deps["typeorm"])
             techs.push("TypeORM");
         if (deps["prisma"])
             techs.push("Prisma");
-        if (deps["pg"])
-            techs.push("PostgreSQL");
-        if (deps["sqlite3"])
-            techs.push("SQLite");
+        // 4️⃣ Lenguajes y herramientas de compilación
+        if (deps["typescript"])
+            techs.push("TypeScript");
+        if (deps["babel"])
+            techs.push("Babel");
+        if (deps["webpack"])
+            techs.push("Webpack");
+        if (deps["vite"])
+            techs.push("Vite");
+        if (deps["rollup"])
+            techs.push("Rollup");
+        // 5️⃣ Testing y calidad de código
+        if (deps["jest"])
+            techs.push("Jest");
+        if (deps["mocha"])
+            techs.push("Mocha");
+        if (deps["chai"])
+            techs.push("Chai");
+        if (deps["eslint"])
+            techs.push("ESLint");
+        if (deps["prettier"])
+            techs.push("Prettier");
+        if (deps["dotenv"])
+            techs.push("dotenv");
+        if (deps["axios"])
+            techs.push("Axios");
+        if (deps["lodash"])
+            techs.push("Lodash");
+        if (deps["cors"])
+            techs.push("CORS");
+        if (deps["body-parser"])
+            techs.push("body-parser");
     }
     return techs;
 }

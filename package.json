@@ -1,8 +1,10 @@
 {
-  "name": "readme-generator",
-  "displayName": "readme-generator",
+  "name": "readme-generator-jochylazala",
+  "displayName": "readme-generator-jochylazala",
   "description": "VS Code extension to auto-generate README.md with proyect  structure and techs  ",
-  "version": "0.0.1",
+  "version": "0.0.2",
+  "publisher": "jochylazala",
+  "icon": "./images/icon.png",
   "engines": {
     "vscode": "^1.103.0"
   },
@@ -19,6 +21,10 @@
       }
     ]
   },
+  "repository": {
+  "type": "git",
+  "url": "https://github.com/lazalajochy/readme.md-generator"
+},
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
