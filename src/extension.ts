@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import * as fs from "fs";
 import * as path from "path";
+import { DEP_TO_TECH } from "./techs";
 
 export function activate(context: vscode.ExtensionContext) {
 	let disposable = vscode.commands.registerCommand("readme-generator.createReadme", async () => {
@@ -16,16 +17,24 @@ export function activate(context: vscode.ExtensionContext) {
 		const structure = getFolderStructure(rootPath);
 
 		// 2. Detectar tecnologías
-		const techs = detectTechnologies(rootPath);
+		const techs = getProdDependencies(rootPath);
 
 		const devDep = getDevDependencies(rootPath)
 
 		// 3. Detectar scripts de package.json
 		const scripts = getScripts(rootPath);
 
+		const version = getProyectVersion(rootPath)
+
+
 		// 4. Armar contenido del README
 		const readmeContent = `# ${path.basename(rootPath)}
 
+		
+
+		
+## Version: ${version}
+		
 ## 📖 Descripción
 Este proyecto fue generado automáticamente por la extensión **README Generator**.
 
@@ -77,104 +86,56 @@ function getFolderStructure(dir: string, depth = 0): string {
 	return result;
 }
 
-// Función para detectar tecnologías por package.json
-function detectTechnologies(rootPath: string): string[] {
-	const techs: string[] = [];
+
+function readPackageJson(rootPath: string): any | null {
 	const pkgPath = path.join(rootPath, "package.json");
-
-	if (fs.existsSync(pkgPath)) {
-		const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
-		const deps = { ...pkg.dependencies };
-
-		// 1️⃣ Frameworks y librerías frontend
-		if (deps["react"]) techs.push("React");
-		if (deps["react-dom"]) techs.push("React DOM");
-		if (deps["vue"]) techs.push("Vue.js");
-		if (deps["angular"]) techs.push("Angular");
-		if (deps["svelte"]) techs.push("Svelte");
-		if (deps["next"]) techs.push("Next.js");
-		if (deps["nuxt"]) techs.push("Nuxt.js");
-		if (deps["gatsby"]) techs.push("Gatsby");
-		if (deps["typescript"]) techs.push("TypeScript")
+	if (!fs.existsSync(pkgPath)) return null;
+	return JSON.parse(fs.readFileSync(pkgPath, "utf8"));
+}
 
 
-		//2️⃣ Frameworks y librerías backend
 
-		if (deps["express"]) techs.push("Express");
-		if (deps["koa"]) techs.push("Koa");
-		if (deps["fastify"]) techs.push("Fastify");
-		if (deps["nestjs"]) techs.push("NestJS");
-		if (deps["hapi"]) techs.push("Hapi");
+function getProdDependencies(rootPath: string): string[] {
+	const pkg = readPackageJson(rootPath);
+	if (!pkg) return [];
 
-		// DB
-		if (deps["pg"]) techs.push("PostgreSQL");
-		if (deps["mysql"]) techs.push("MySQL");
-		if (deps["mongodb"]) techs.push("MongoDB");
-		if (deps["sqlite3"]) techs.push("SQLite");
-		if (deps["typeorm"]) techs.push("TypeORM");
-		if (deps["prisma"]) techs.push("Prisma");
+	const deps = { ...pkg.dependencies };
+	return Object.keys(DEP_TO_TECH)
+		.filter(dep => deps[dep])
+		.map(dep => DEP_TO_TECH[dep]);
+}
 
 
-		// 4️⃣ Lenguajes y herramientas de compilación
-		if (deps["typescript"]) techs.push("TypeScript");
-		if (deps["babel"]) techs.push("Babel");
-		if (deps["webpack"]) techs.push("Webpack");
-		if (deps["vite"]) techs.push("Vite");
-		if (deps["rollup"]) techs.push("Rollup");
 
+function getDevDependencies(rootPath: string): string[] {
+	const pkg = readPackageJson(rootPath);
+	if (!pkg) return [];
 
-		// 5️⃣ Testing y calidad de código
-		if (deps["jest"]) techs.push("Jest");
-		if (deps["mocha"]) techs.push("Mocha");
-		if (deps["chai"]) techs.push("Chai");
-		if (deps["eslint"]) techs.push("ESLint");
-		if (deps["prettier"]) techs.push("Prettier");
+	const devDep = { ...pkg.devDependencies };
+	const techs: string[] = Object.keys(devDep).filter(dep => devDep[dep]).map(dep => dep);
 
-
-		if (deps["dotenv"]) techs.push("dotenv");
-		if (deps["axios"]) techs.push("Axios");
-		if (deps["lodash"]) techs.push("Lodash");
-		if (deps["cors"]) techs.push("CORS");
-		if (deps["body-parser"]) techs.push("body-parser");
-
-	}
+	// Revisar docker-compose
+	const dockerFile = path.join(rootPath, "docker-compose.yml");
+	if (fs.existsSync(dockerFile)) techs.push("docker-compose");
 
 	return techs;
 }
 
-//. get devDependicies
 
-function getDevDependencies(rootPath:string): string[]{
-	const techs: string[] = [];
+function getProyectVersion(rootPath: string): string {
 
 	const pkgPath = path.join(rootPath, "package.json");
-
-	if(fs.existsSync(pkgPath)){
-		const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
-
-		const devDep = {...pkg.devDependencies};
-
-		//check if exist docker-compose
-
-		const dockerc = path.join(rootPath, "docker-compose.yml")
-
-		if(dockerc) techs.push("docker-compose")
-
-		if(devDep["nodemon"]) techs.push("Nodemon")
+	if (fs.existsSync(pkgPath)) {
+		const pkgJson = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
+		return pkgJson.version || "unknown-version";
 	}
-
-
-
-	return techs
+	return "unknown-version";
 }
-
 
 
 // Función para listar scripts de package.json
 function getScripts(rootPath: string): string[] {
-	const pkgPath = path.join(rootPath, "package.json");
-	if (!fs.existsSync(pkgPath)) return [];
-
-	const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
-	return pkg.scripts ? Object.keys(pkg.scripts) : [];
+	const pkg = readPackageJson(rootPath);
+	return pkg?.scripts ? Object.keys(pkg.scripts) : [];
 }
+

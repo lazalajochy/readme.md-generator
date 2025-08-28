@@ -1,0 +1,40 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DEP_TO_TECH = void 0;
+exports.DEP_TO_TECH = {
+    "react": "React",
+    "react-dom": "React DOM",
+    "vue": "Vue.js",
+    "angular": "Angular",
+    "svelte": "Svelte",
+    "next": "Next.js",
+    "nuxt": "Nuxt.js",
+    "gatsby": "Gatsby",
+    "typescript": "TypeScript",
+    "express": "Express",
+    "koa": "Koa",
+    "fastify": "Fastify",
+    "nestjs": "NestJS",
+    "hapi": "Hapi",
+    "pg": "PostgreSQL",
+    "mysql": "MySQL",
+    "mongodb": "MongoDB",
+    "sqlite3": "SQLite",
+    "typeorm": "TypeORM",
+    "prisma": "Prisma",
+    "babel": "Babel",
+    "webpack": "Webpack",
+    "vite": "Vite",
+    "rollup": "Rollup",
+    "jest": "Jest",
+    "mocha": "Mocha",
+    "chai": "Chai",
+    "eslint": "ESLint",
+    "prettier": "Prettier",
+    "dotenv": "dotenv",
+    "axios": "Axios",
+    "lodash": "Lodash",
+    "cors": "CORS",
+    "body-parser": "body-parser"
+};
+//# sourceMappingURL=techs.js.map
