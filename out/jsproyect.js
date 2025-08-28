@@ -55,6 +55,7 @@ function getProdDependencies(rootPath) {
         .filter(dep => deps[dep])
         .map(dep => techs_1.DEP_TO_TECH[dep]);
 }
+//vsce publish. vsce package
 function getDevDependencies(rootPath) {
     const pkg = readPackageJson(rootPath);
     if (!pkg)

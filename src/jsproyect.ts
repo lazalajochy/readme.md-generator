@@ -23,7 +23,7 @@ export function getProdDependencies(rootPath: string): string[] {
 }
 
 
-
+//vsce publish. vsce package
 export function getDevDependencies(rootPath: string): string[] {
 	const pkg = readPackageJson(rootPath);
 	if (!pkg) return [];
