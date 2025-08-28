@@ -8,6 +8,8 @@ import { isNodeProject, isPythonProject, isJavaProject } from "./detectors";
 import { getProdDependencies, getDevDependencies, getScripts, getPackageField } from "./jsproyect";
 import { buildReadme } from "./readmeBuilder";
 import { getMavenInfo, getGradleInfo } from "./javaproyect";
+import { getLanguagesVersions } from "./languajeVersion";
+
 
 export function activate(context: vscode.ExtensionContext) {
 	let disposable = vscode.commands.registerCommand("readme-generator.createReadme", async () => {
@@ -19,10 +21,13 @@ export function activate(context: vscode.ExtensionContext) {
 
 		const rootPath = workspaceFolders[0].uri.fsPath;
 
-		// 📌 Repositorio
+		//  Repository
 		const repo = await getRepoUrl(rootPath);
 
-		// 📌 Infraestructura
+		// language version
+
+
+		// Infraestructure
 		const infraTools = getInfrastructureTools(rootPath);
 
 		// 📌 Estructura del proyecto
@@ -34,11 +39,20 @@ export function activate(context: vscode.ExtensionContext) {
 		let scripts: string[] = [];
 		let version = "unknown-version";
 		let license = "unknown-license";
+		let languageV: any = "";
 
 		// --------------------
 		// Detectores
 		// --------------------
 		if (isNodeProject(rootPath)) {
+			languageV = await getLanguagesVersions(rootPath,
+				[
+					{ language: "nodejs", command: "node -v" },
+					{ language: "npm", command: "npm -v" },
+					{ language: "git", command: "git --version" },
+				]
+
+			);
 			techs = getProdDependencies(rootPath);
 			devDep = getDevDependencies(rootPath);
 			scripts = getScripts(rootPath);
@@ -62,6 +76,7 @@ export function activate(context: vscode.ExtensionContext) {
 		// 📌 Construir README
 		const readmeContent = buildReadme({
 			rootPath,
+			languageV,
 			repo,
 			version,
 			license,

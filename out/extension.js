@@ -44,6 +44,7 @@ const detectors_1 = require("./detectors");
 const jsproyect_1 = require("./jsproyect");
 const readmeBuilder_1 = require("./readmeBuilder");
 const javaproyect_1 = require("./javaproyect");
+const languajeVersion_1 = require("./languajeVersion");
 function activate(context) {
     let disposable = vscode.commands.registerCommand("readme-generator.createReadme", async () => {
         const workspaceFolders = vscode.workspace.workspaceFolders;
@@ -52,9 +53,10 @@ function activate(context) {
             return;
         }
         const rootPath = workspaceFolders[0].uri.fsPath;
-        // 📌 Repositorio
+        //  Repository
         const repo = await (0, repo_1.getRepoUrl)(rootPath);
-        // 📌 Infraestructura
+        // language version
+        // Infraestructure
         const infraTools = (0, infra_1.getInfrastructureTools)(rootPath);
         // 📌 Estructura del proyecto
         const structure = (0, structure_1.getFolderStructure)(rootPath);
@@ -64,10 +66,16 @@ function activate(context) {
         let scripts = [];
         let version = "unknown-version";
         let license = "unknown-license";
+        let languageV = "";
         // --------------------
         // Detectores
         // --------------------
         if ((0, detectors_1.isNodeProject)(rootPath)) {
+            languageV = await (0, languajeVersion_1.getLanguagesVersions)(rootPath, [
+                { language: "nodejs", command: "node -v" },
+                { language: "npm", command: "npm -v" },
+                { language: "git", command: "git --version" },
+            ]);
             techs = (0, jsproyect_1.getProdDependencies)(rootPath);
             devDep = (0, jsproyect_1.getDevDependencies)(rootPath);
             scripts = (0, jsproyect_1.getScripts)(rootPath);
@@ -93,6 +101,7 @@ function activate(context) {
         // 📌 Construir README
         const readmeContent = (0, readmeBuilder_1.buildReadme)({
             rootPath,
+            languageV,
             repo,
             version,
             license,

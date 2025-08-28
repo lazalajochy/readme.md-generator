@@ -1,5 +1,6 @@
 export interface ReadmeData {
     rootPath: string;
+    languageV: string[];
     repo: string | null;
     version: string;
     license: string;
@@ -8,4 +9,9 @@ export interface ReadmeData {
     scripts: string[];
     infraTools: string[];
     structure: string;
+}
+
+export interface CommandInfo  {
+  language: string;  
+  command: string;  
 }
