@@ -7,6 +7,7 @@ import { getFolderStructure } from "./structure";
 import { isNodeProject, isPythonProject, isJavaProject } from "./detectors";
 import { getProdDependencies, getDevDependencies, getScripts, getPackageField } from "./jsproyect";
 import { buildReadme } from "./readmeBuilder";
+import { getMavenInfo, getGradleInfo } from "./javaproyect";
 
 export function activate(context: vscode.ExtensionContext) {
 	let disposable = vscode.commands.registerCommand("readme-generator.createReadme", async () => {
@@ -46,7 +47,16 @@ export function activate(context: vscode.ExtensionContext) {
 		} else if (isPythonProject(rootPath)) {
 			techs = ["Python"];
 		} else if (isJavaProject(rootPath)) {
-			techs = ["Java"];
+			if (fs.existsSync(path.join(rootPath, "pom.xml"))) {
+				const { version: mavenVersion, deps } = await getMavenInfo(rootPath);
+				techs = ["Java (Maven)", ...deps];
+				version = mavenVersion;
+			} else {
+				const { version: gradleVersion, deps, scripts: gradleScripts } = getGradleInfo(rootPath);
+				techs = ["Java (Gradle)", ...deps];
+				version = gradleVersion;
+				scripts = gradleScripts;
+			}
 		}
 
 		// 📌 Construir README

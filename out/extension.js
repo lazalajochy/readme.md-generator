@@ -43,6 +43,7 @@ const structure_1 = require("./structure");
 const detectors_1 = require("./detectors");
 const jsproyect_1 = require("./jsproyect");
 const readmeBuilder_1 = require("./readmeBuilder");
+const javaproyect_1 = require("./javaproyect");
 function activate(context) {
     let disposable = vscode.commands.registerCommand("readme-generator.createReadme", async () => {
         const workspaceFolders = vscode.workspace.workspaceFolders;
@@ -77,7 +78,17 @@ function activate(context) {
             techs = ["Python"];
         }
         else if ((0, detectors_1.isJavaProject)(rootPath)) {
-            techs = ["Java"];
+            if (fs.existsSync(path.join(rootPath, "pom.xml"))) {
+                const { version: mavenVersion, deps } = await (0, javaproyect_1.getMavenInfo)(rootPath);
+                techs = ["Java (Maven)", ...deps];
+                version = mavenVersion;
+            }
+            else {
+                const { version: gradleVersion, deps, scripts: gradleScripts } = (0, javaproyect_1.getGradleInfo)(rootPath);
+                techs = ["Java (Gradle)", ...deps];
+                version = gradleVersion;
+                scripts = gradleScripts;
+            }
         }
         // 📌 Construir README
         const readmeContent = (0, readmeBuilder_1.buildReadme)({
