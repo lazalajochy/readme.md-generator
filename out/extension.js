@@ -49,6 +49,7 @@ function activate(context) {
         const structure = getFolderStructure(rootPath);
         // 2. Detectar tecnologías
         const techs = detectTechnologies(rootPath);
+        const devDep = getDevDependencies(rootPath);
         // 3. Detectar scripts de package.json
         const scripts = getScripts(rootPath);
         // 4. Armar contenido del README
@@ -57,8 +58,12 @@ function activate(context) {
 ## 📖 Descripción
 Este proyecto fue generado automáticamente por la extensión **README Generator**.
 
-## ⚙️ Tecnologías
+## ⚙️ Tecnologías de produccion
 ${techs.join(", ") || "No detectadas"}
+
+
+## ⚙️ Tecnologías de desarrollo
+${devDep.join(", ") || "No detectadas"}
 
 ## 📜 Scripts disponibles
 ${scripts.length ? scripts.map(s => `- \`${s}\``).join("\n") : "No definidos"}
@@ -99,7 +104,7 @@ function detectTechnologies(rootPath) {
     const pkgPath = path.join(rootPath, "package.json");
     if (fs.existsSync(pkgPath)) {
         const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
-        const deps = { ...pkg.dependencies, ...pkg.devDependencies };
+        const deps = { ...pkg.dependencies };
         // 1️⃣ Frameworks y librerías frontend
         if (deps["react"])
             techs.push("React");
@@ -175,6 +180,22 @@ function detectTechnologies(rootPath) {
             techs.push("CORS");
         if (deps["body-parser"])
             techs.push("body-parser");
+    }
+    return techs;
+}
+//. get devDependicies
+function getDevDependencies(rootPath) {
+    const techs = [];
+    const pkgPath = path.join(rootPath, "package.json");
+    if (fs.existsSync(pkgPath)) {
+        const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
+        const devDep = { ...pkg.devDependencies };
+        //check if exist docker-compose
+        const dockerc = path.join(rootPath, "docker-compose.yml");
+        if (dockerc)
+            techs.push("docker-compose");
+        if (devDep["nodemon"])
+            techs.push("Nodemon");
     }
     return techs;
 }
