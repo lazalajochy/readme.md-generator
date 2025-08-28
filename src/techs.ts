@@ -34,3 +34,23 @@ export const DEP_TO_TECH: { [key: string]: string } = {
     "cors": "CORS",
     "body-parser": "body-parser"
 };
+
+
+export const INFRA_TOOLS: { [key: string]: string } = {
+    "docker-compose.yml": "Docker Compose",
+    "Dockerfile": "Docker",
+    "nginx.conf": "Nginx",
+    "httpd.conf": "Apache HTTP Server",
+    "k8s.yaml": "Kubernetes",
+    "kubernetes.yml": "Kubernetes",
+    "helm-chart.yaml": "Helm Chart",
+    "terraform.tf": "Terraform",
+    "Vagrantfile": "Vagrant",
+    ".env": "Environment Variables",
+    "solr.xml": "Apache Solr",
+    "tomcat.conf": "Apache Tomcat",
+    "server.xml": "Apache Tomcat",
+    "docker-compose.override.yml": "Docker Compose Override",
+    "traefik.yml": "Traefik",
+};
+

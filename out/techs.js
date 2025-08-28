@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DEP_TO_TECH = void 0;
+exports.INFRA_TOOLS = exports.DEP_TO_TECH = void 0;
 exports.DEP_TO_TECH = {
     "react": "React",
     "react-dom": "React DOM",
@@ -36,5 +36,22 @@ exports.DEP_TO_TECH = {
     "lodash": "Lodash",
     "cors": "CORS",
     "body-parser": "body-parser"
+};
+exports.INFRA_TOOLS = {
+    "docker-compose.yml": "Docker Compose",
+    "Dockerfile": "Docker",
+    "nginx.conf": "Nginx",
+    "httpd.conf": "Apache HTTP Server",
+    "k8s.yaml": "Kubernetes",
+    "kubernetes.yml": "Kubernetes",
+    "helm-chart.yaml": "Helm Chart",
+    "terraform.tf": "Terraform",
+    "Vagrantfile": "Vagrant",
+    ".env": "Environment Variables",
+    "solr.xml": "Apache Solr",
+    "tomcat.conf": "Apache Tomcat",
+    "server.xml": "Apache Tomcat",
+    "docker-compose.override.yml": "Docker Compose Override",
+    "traefik.yml": "Traefik",
 };
 //# sourceMappingURL=techs.js.map

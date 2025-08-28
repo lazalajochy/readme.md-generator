@@ -34,6 +34,7 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.activate = activate;
+exports.getInfrastructureTools = getInfrastructureTools;
 const vscode = __importStar(require("vscode"));
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
@@ -55,6 +56,7 @@ function activate(context) {
         const scripts = getScripts(rootPath);
         const version = getPackageField(rootPath, "version");
         const license = getPackageField(rootPath, "license");
+        const infraTools = getInfrastructureTools(rootPath);
         // 4. Armar contenido del README
         const readmeContent = `# ${path.basename(rootPath)}
 
@@ -77,6 +79,11 @@ ${devDep.join(", ") || "Not found"}
 
 ## 📜 Scripts available
 ${scripts.length ? scripts.map(s => `- \`${s}\``).join("\n") : "No definidos"}
+
+
+## 🌐 Deployment & Infrastructure
+${infraTools.join(", ") || "Not found"} 
+
 
 ## 📂 Project structure
 \`\`\`
@@ -129,11 +136,17 @@ function getDevDependencies(rootPath) {
         return [];
     const devDep = { ...pkg.devDependencies };
     const techs = Object.keys(devDep).filter(dep => devDep[dep]).map(dep => dep);
-    // Revisar docker-compose
-    const dockerFile = path.join(rootPath, "docker-compose.yml");
-    if (fs.existsSync(dockerFile))
-        techs.push("docker-compose");
     return techs;
+}
+function getInfrastructureTools(rootPath) {
+    const foundTools = [];
+    for (const file in techs_1.INFRA_TOOLS) {
+        const filePath = path.join(rootPath, file);
+        if (fs.existsSync(filePath)) {
+            foundTools.push(techs_1.INFRA_TOOLS[file]);
+        }
+    }
+    return foundTools;
 }
 function getPackageField(rootPath, field) {
     const pkgPath = path.join(rootPath, "package.json");

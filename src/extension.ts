@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import * as fs from "fs";
 import * as path from "path";
-import { DEP_TO_TECH } from "./techs";
+import { DEP_TO_TECH, INFRA_TOOLS } from "./techs";
 
 export function activate(context: vscode.ExtensionContext) {
 	let disposable = vscode.commands.registerCommand("readme-generator.createReadme", async () => {
@@ -28,6 +28,8 @@ export function activate(context: vscode.ExtensionContext) {
 
 		const license = getPackageField(rootPath, "license")
 
+		const infraTools = getInfrastructureTools(rootPath)
+
 
 		// 4. Armar contenido del README
 		const readmeContent = `# ${path.basename(rootPath)}
@@ -51,6 +53,11 @@ ${devDep.join(", ") || "Not found"}
 
 ## 📜 Scripts available
 ${scripts.length ? scripts.map(s => `- \`${s}\``).join("\n") : "No definidos"}
+
+
+## 🌐 Deployment & Infrastructure
+${infraTools.join(", ") || "Not found"} 
+
 
 ## 📂 Project structure
 \`\`\`
@@ -118,23 +125,33 @@ function getDevDependencies(rootPath: string): string[] {
 	const devDep = { ...pkg.devDependencies };
 	const techs: string[] = Object.keys(devDep).filter(dep => devDep[dep]).map(dep => dep);
 
-	// Revisar docker-compose
-	const dockerFile = path.join(rootPath, "docker-compose.yml");
-	if (fs.existsSync(dockerFile)) techs.push("docker-compose");
+
 
 	return techs;
 }
 
 
-function getPackageField(rootPath: string, field: string): string {
-    const pkgPath = path.join(rootPath, "package.json");
+export function getInfrastructureTools(rootPath: string): string[] {
+    const foundTools: string[] = [];
 
-    if (fs.existsSync(pkgPath)) {
-        const pkgJson = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
-        return pkgJson[field] || `unknown-${field}`;
+    for (const file in INFRA_TOOLS) {
+        const filePath = path.join(rootPath, file);
+        if (fs.existsSync(filePath)) {
+            foundTools.push(INFRA_TOOLS[file]);
+        }
     }
 
-    return `unknown-${field}`;
+    return foundTools;
+}
+function getPackageField(rootPath: string, field: string): string {
+	const pkgPath = path.join(rootPath, "package.json");
+
+	if (fs.existsSync(pkgPath)) {
+		const pkgJson = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
+		return pkgJson[field] || `unknown-${field}`;
+	}
+
+	return `unknown-${field}`;
 }
 
 
