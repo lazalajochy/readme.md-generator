@@ -13,6 +13,13 @@
 
 ---
 
+
+## How it works
+
+![Workflow](./images/demo.gif)
+
+---
+
 ## 📖 Description
 
 **Quick Readme** is a Visual Studio Code extension designed to **automatically generate README.md files** showing the project structure, detected technologies, and available scripts.  
