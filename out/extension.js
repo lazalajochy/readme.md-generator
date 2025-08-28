@@ -39,6 +39,7 @@ const vscode = __importStar(require("vscode"));
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
 const techs_1 = require("./techs");
+const repo_1 = require("./repo");
 function activate(context) {
     let disposable = vscode.commands.registerCommand("readme-generator.createReadme", async () => {
         const workspaceFolders = vscode.workspace.workspaceFolders;
@@ -47,6 +48,7 @@ function activate(context) {
             return;
         }
         const rootPath = workspaceFolders[0].uri.fsPath;
+        const repo = await getRepo(rootPath);
         // 1. Escanear estructura del proyecto
         const structure = getFolderStructure(rootPath);
         // 2. Detectar tecnologías
@@ -83,6 +85,14 @@ ${scripts.length ? scripts.map(s => `- \`${s}\``).join("\n") : "No definidos"}
 
 ## 🌐 Deployment & Infrastructure
 ${infraTools.join(", ") || "Not found"} 
+
+
+## Clone repository
+
+## Clone repository
+\`\`\`bash
+git clone ${repo !== "No repository found" ? repo : ""}
+\`\`\`
 
 
 ## 📂 Project structure
@@ -160,5 +170,15 @@ function getPackageField(rootPath, field) {
 function getScripts(rootPath) {
     const pkg = readPackageJson(rootPath);
     return pkg?.scripts ? Object.keys(pkg.scripts) : [];
+}
+async function getRepo(rootPath) {
+    try {
+        const remotes = await (0, repo_1.getRepoUrl)(rootPath);
+        return remotes;
+    }
+    catch (error) {
+        console.error(error);
+        return "No repository found";
+    }
 }
 //# sourceMappingURL=extension.js.map

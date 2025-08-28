@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import * as fs from "fs";
 import * as path from "path";
 import { DEP_TO_TECH, INFRA_TOOLS } from "./techs";
+import { getRepoUrl } from "./repo";
 
 export function activate(context: vscode.ExtensionContext) {
 	let disposable = vscode.commands.registerCommand("readme-generator.createReadme", async () => {
@@ -11,7 +12,11 @@ export function activate(context: vscode.ExtensionContext) {
 			return;
 		}
 
+
 		const rootPath = workspaceFolders[0].uri.fsPath;
+
+		const repo = await getRepo(rootPath)
+
 
 		// 1. Escanear estructura del proyecto
 		const structure = getFolderStructure(rootPath);
@@ -57,6 +62,14 @@ ${scripts.length ? scripts.map(s => `- \`${s}\``).join("\n") : "No definidos"}
 
 ## 🌐 Deployment & Infrastructure
 ${infraTools.join(", ") || "Not found"} 
+
+
+## Clone repository
+
+## Clone repository
+\`\`\`bash
+git clone ${repo !== "No repository found" ? repo : ""}
+\`\`\`
 
 
 ## 📂 Project structure
@@ -132,16 +145,16 @@ function getDevDependencies(rootPath: string): string[] {
 
 
 export function getInfrastructureTools(rootPath: string): string[] {
-    const foundTools: string[] = [];
+	const foundTools: string[] = [];
 
-    for (const file in INFRA_TOOLS) {
-        const filePath = path.join(rootPath, file);
-        if (fs.existsSync(filePath)) {
-            foundTools.push(INFRA_TOOLS[file]);
-        }
-    }
+	for (const file in INFRA_TOOLS) {
+		const filePath = path.join(rootPath, file);
+		if (fs.existsSync(filePath)) {
+			foundTools.push(INFRA_TOOLS[file]);
+		}
+	}
 
-    return foundTools;
+	return foundTools;
 }
 function getPackageField(rootPath: string, field: string): string {
 	const pkgPath = path.join(rootPath, "package.json");
@@ -159,5 +172,15 @@ function getPackageField(rootPath: string, field: string): string {
 function getScripts(rootPath: string): string[] {
 	const pkg = readPackageJson(rootPath);
 	return pkg?.scripts ? Object.keys(pkg.scripts) : [];
+}
+
+async function getRepo(rootPath: string): Promise<string> {
+	try {
+		const remotes = await getRepoUrl(rootPath);
+		return remotes;
+	} catch (error) {
+		console.error(error);
+		return "No repository found";
+	}
 }
 

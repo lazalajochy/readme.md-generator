@@ -37,20 +37,45 @@ export const DEP_TO_TECH: { [key: string]: string } = {
 
 
 export const INFRA_TOOLS: { [key: string]: string } = {
-    "docker-compose.yml": "Docker Compose",
+    // Contenedores y orquestación
     "Dockerfile": "Docker",
-    "nginx.conf": "Nginx",
-    "httpd.conf": "Apache HTTP Server",
+    "docker-compose.yml": "Docker Compose",
+    "docker-compose.override.yml": "Docker Compose Override",
     "k8s.yaml": "Kubernetes",
     "kubernetes.yml": "Kubernetes",
     "helm-chart.yaml": "Helm Chart",
-    "terraform.tf": "Terraform",
     "Vagrantfile": "Vagrant",
+    "terraform.tf": "Terraform",
     ".env": "Environment Variables",
-    "solr.xml": "Apache Solr",
+
+    // Servidores web
+    "nginx.conf": "Nginx",
+    "httpd.conf": "Apache HTTP Server",
+    "apache2.conf": "Apache HTTP Server",
     "tomcat.conf": "Apache Tomcat",
     "server.xml": "Apache Tomcat",
-    "docker-compose.override.yml": "Docker Compose Override",
     "traefik.yml": "Traefik",
+
+    // Motores de búsqueda
+    "solr.xml": "Apache Solr",
+    "elasticsearch.yml": "Elasticsearch",
+
+    // Bases de datos
+    "postgresql.conf": "PostgreSQL",
+    "my.cnf": "MySQL",
+    "mongod.conf": "MongoDB",
+    "redis.conf": "Redis",
+    "cassandra.yaml": "Cassandra",
+
+    // Colas de mensajes y brokers
+    "rabbitmq.conf": "RabbitMQ",
+    "activemq.xml": "ActiveMQ",
+    "kafka.properties": "Apache Kafka",
+
+    // Otros servicios comunes
+    "consul.hcl": "HashiCorp Consul",
+    "vault.hcl": "HashiCorp Vault",
+    "prometheus.yml": "Prometheus",
+    "grafana.ini": "Grafana"
 };
 
