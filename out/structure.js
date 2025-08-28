@@ -36,7 +36,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getFolderStructure = getFolderStructure;
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
-const ignoredFolders = ["node_modules", ".git", ".vscode", "dist", "build", ".idea"];
+const ignoredFolders = ["node_modules", ".env", ".gitignore", ".git", ".vscode", "dist", "build", ".idea"];
 function getFolderStructure(dir, depth = 0) {
     const files = fs.readdirSync(dir).filter(f => !ignoredFolders.includes(f));
     let result = "";
