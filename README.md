@@ -1,7 +1,7 @@
 <div align="center">
   <img src="images/icon.png" alt="Readme Generator Logo" width="200"/>
   
-  # Readme Generator
+  # Quick Readme
   
   **VS Code extension to automatically generate README.md with project structure and detected technologies**
   
@@ -15,7 +15,7 @@
 
 ## 📖 Description
 
-**Readme Generator** is a Visual Studio Code extension designed to **automatically generate README.md files** showing the project structure, detected technologies, and available scripts.  
+**Quick Readme** is a Visual Studio Code extension designed to **automatically generate README.md files** showing the project structure, detected technologies, and available scripts.  
 
 > 🎯 **Mission**: Save developers time by automatically generating initial project documentation.  
 > 🚀 **Vision**: Become the standard tool for creating clear and organized README.md files for any project.  
