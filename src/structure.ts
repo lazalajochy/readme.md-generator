@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 
-const ignoredFolders = ["node_modules", ".env", ".gitignore",  ".git", ".vscode", "dist", "build", ".idea"];
+const ignoredFolders = [".DS_Store", ".eslintrc.cjs", ".husky", "node_modules", ".env", ".gitignore",  ".git", ".vscode", "dist", "build", ".idea"];
 
 export function getFolderStructure(dir: string, depth = 0): string {
 	const files = fs.readdirSync(dir).filter(f => !ignoredFolders.includes(f));

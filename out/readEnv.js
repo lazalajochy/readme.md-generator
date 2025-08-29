@@ -33,24 +33,14 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getFolderStructure = getFolderStructure;
+exports.readEnvVariable = readEnvVariable;
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
-const ignoredFolders = [".DS_Store", ".eslintrc.cjs", ".husky", "node_modules", ".env", ".gitignore", ".git", ".vscode", "dist", "build", ".idea"];
-function getFolderStructure(dir, depth = 0) {
-    const files = fs.readdirSync(dir).filter(f => !ignoredFolders.includes(f));
-    let result = "";
-    for (const file of files) {
-        const filePath = path.join(dir, file);
-        const stats = fs.statSync(filePath);
-        const indent = "  ".repeat(depth);
-        if (stats.isDirectory()) {
-            result += `${indent}📂 ${file}\n${getFolderStructure(filePath, depth + 1)}`;
-        }
-        else {
-            result += `${indent}📄 ${file}\n`;
-        }
-    }
-    return result;
+function readEnvVariable(rootPath) {
+    const env = path.join(rootPath, ".env");
+    if (!fs.existsSync(env))
+        return [];
+    const content = fs.readFileSync(env, "utf-8");
+    return content.split("\n").filter(line => line.trim() !== "");
 }
-//# sourceMappingURL=structure.js.map
+//# sourceMappingURL=readEnv.js.map

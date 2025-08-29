@@ -26,6 +26,11 @@ ${data.devDep.join(", ") || "Not found"}
 ## 📜 Scripts available
 ${data.scripts.length ? data.scripts.map(s => `- \`${s}\``).join("\n") : "Not defined"}
 
+
+## Env variable
+${data.env.length ? data.env.map(s => `- \`${s}\``).join("\n") : "Not defined"}
+
+
 ## 🌐 Deployment & Infrastructure
 ${data.infraTools.join(", ") || "Not found"}
 

@@ -9,6 +9,7 @@ import { getProdDependencies, getDevDependencies, getScripts, getPackageField } 
 import { buildReadme } from "./readmeBuilder";
 import { getMavenInfo, getGradleInfo } from "./javaproyect";
 import { getLanguagesVersions } from "./languajeVersion";
+import { readEnvVariable } from "./readEnv";
 
 
 export function activate(context: vscode.ExtensionContext) {
@@ -40,6 +41,7 @@ export function activate(context: vscode.ExtensionContext) {
 		let version = "unknown-version";
 		let license = "unknown-license";
 		let languageV: any = "";
+		let env: string[] = []
 
 		// --------------------
 		// Detectores
@@ -58,6 +60,7 @@ export function activate(context: vscode.ExtensionContext) {
 			scripts = getScripts(rootPath);
 			version = getPackageField(rootPath, "version");
 			license = getPackageField(rootPath, "license");
+			env = readEnvVariable(rootPath);
 		} else if (isPythonProject(rootPath)) {
 			techs = ["Python"];
 		} else if (isJavaProject(rootPath)) {
@@ -100,6 +103,7 @@ export function activate(context: vscode.ExtensionContext) {
 			scripts,
 			infraTools,
 			structure,
+			env
 		});
 
 		// Save README

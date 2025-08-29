@@ -45,6 +45,7 @@ const jsproyect_1 = require("./jsproyect");
 const readmeBuilder_1 = require("./readmeBuilder");
 const javaproyect_1 = require("./javaproyect");
 const languajeVersion_1 = require("./languajeVersion");
+const readEnv_1 = require("./readEnv");
 function activate(context) {
     let disposable = vscode.commands.registerCommand("readme-generator.createReadme", async () => {
         const workspaceFolders = vscode.workspace.workspaceFolders;
@@ -67,6 +68,7 @@ function activate(context) {
         let version = "unknown-version";
         let license = "unknown-license";
         let languageV = "";
+        let env = [];
         // --------------------
         // Detectores
         // --------------------
@@ -81,6 +83,7 @@ function activate(context) {
             scripts = (0, jsproyect_1.getScripts)(rootPath);
             version = (0, jsproyect_1.getPackageField)(rootPath, "version");
             license = (0, jsproyect_1.getPackageField)(rootPath, "license");
+            env = (0, readEnv_1.readEnvVariable)(rootPath);
         }
         else if ((0, detectors_1.isPythonProject)(rootPath)) {
             techs = ["Python"];
@@ -120,6 +123,7 @@ function activate(context) {
             scripts,
             infraTools,
             structure,
+            env
         });
         // Save README
         const readmePath = path.join(rootPath, "README.md");

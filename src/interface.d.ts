@@ -9,6 +9,7 @@ export interface ReadmeData {
     scripts: string[];
     infraTools: string[];
     structure: string;
+    env:string[];
 }
 
 export interface CommandInfo  {
