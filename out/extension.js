@@ -58,9 +58,9 @@ function activate(context) {
         // language version
         // Infraestructure
         const infraTools = (0, infra_1.getInfrastructureTools)(rootPath);
-        // 📌 Estructura del proyecto
+        //  Estructura del proyecto
         const structure = (0, structure_1.getFolderStructure)(rootPath);
-        // 📌 Defaults
+        //  Defaults
         let techs = [];
         let devDep = [];
         let scripts = [];
@@ -89,16 +89,26 @@ function activate(context) {
             if (fs.existsSync(path.join(rootPath, "pom.xml"))) {
                 const { version: mavenVersion, deps } = await (0, javaproyect_1.getMavenInfo)(rootPath);
                 techs = ["Java (Maven)", ...deps];
+                languageV = await (0, languajeVersion_1.getLanguagesVersions)(rootPath, [
+                    { language: "java", command: "java --version" },
+                    { language: "javac", command: "javac -version" },
+                    { language: "JAVA_HOME", command: "echo $JAVA_HOME" }
+                ]);
                 version = mavenVersion;
             }
             else {
                 const { version: gradleVersion, deps, scripts: gradleScripts } = (0, javaproyect_1.getGradleInfo)(rootPath);
                 techs = ["Java (Gradle)", ...deps];
+                languageV = await (0, languajeVersion_1.getLanguagesVersions)(rootPath, [
+                    { language: "java", command: "java --version" },
+                    { language: "javac", command: "javac -version" },
+                    { language: "JAVA_HOME", command: "echo $JAVA_HOME" }
+                ]);
                 version = gradleVersion;
                 scripts = gradleScripts;
             }
         }
-        // 📌 Construir README
+        //  Build README
         const readmeContent = (0, readmeBuilder_1.buildReadme)({
             rootPath,
             languageV,
@@ -111,7 +121,7 @@ function activate(context) {
             infraTools,
             structure,
         });
-        // 📌 Guardar README
+        // Save README
         const readmePath = path.join(rootPath, "README.md");
         fs.writeFileSync(readmePath, readmeContent);
         vscode.window.showInformationMessage("README.md generado con éxito 🚀");

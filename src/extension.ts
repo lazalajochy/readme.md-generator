@@ -30,10 +30,10 @@ export function activate(context: vscode.ExtensionContext) {
 		// Infraestructure
 		const infraTools = getInfrastructureTools(rootPath);
 
-		// 📌 Estructura del proyecto
+		//  Estructura del proyecto
 		const structure = getFolderStructure(rootPath);
 
-		// 📌 Defaults
+		//  Defaults
 		let techs: string[] = [];
 		let devDep: string[] = [];
 		let scripts: string[] = [];
@@ -64,16 +64,31 @@ export function activate(context: vscode.ExtensionContext) {
 			if (fs.existsSync(path.join(rootPath, "pom.xml"))) {
 				const { version: mavenVersion, deps } = await getMavenInfo(rootPath);
 				techs = ["Java (Maven)", ...deps];
+				languageV = await getLanguagesVersions(rootPath,
+					[
+						{ language: "java", command: "java --version" },
+						{ language: "javac", command: "javac -version" },
+						{ language: "JAVA_HOME", command: "echo $JAVA_HOME" }
+					]
+				)
+
 				version = mavenVersion;
 			} else {
 				const { version: gradleVersion, deps, scripts: gradleScripts } = getGradleInfo(rootPath);
 				techs = ["Java (Gradle)", ...deps];
+				languageV = await getLanguagesVersions(rootPath,
+					[
+						{ language: "java", command: "java --version" },
+						{ language: "javac", command: "javac -version" },
+						{ language: "JAVA_HOME", command: "echo $JAVA_HOME" }
+					]
+				)
 				version = gradleVersion;
 				scripts = gradleScripts;
 			}
 		}
 
-		// 📌 Construir README
+		//  Build README
 		const readmeContent = buildReadme({
 			rootPath,
 			languageV,
@@ -87,7 +102,7 @@ export function activate(context: vscode.ExtensionContext) {
 			structure,
 		});
 
-		// 📌 Guardar README
+		// Save README
 		const readmePath = path.join(rootPath, "README.md");
 		fs.writeFileSync(readmePath, readmeContent);
 
