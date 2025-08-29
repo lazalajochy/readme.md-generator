@@ -10,6 +10,7 @@ import { buildReadme } from "./readmeBuilder";
 import { getMavenInfo, getGradleInfo } from "./javaproyect";
 import { getLanguagesVersions } from "./languajeVersion";
 import { readEnvVariable } from "./readEnv";
+import { getTechPython } from "./pythonproyect";
 
 
 export function activate(context: vscode.ExtensionContext) {
@@ -61,8 +62,18 @@ export function activate(context: vscode.ExtensionContext) {
 			version = getPackageField(rootPath, "version");
 			license = getPackageField(rootPath, "license");
 			env = readEnvVariable(rootPath);
+
 		} else if (isPythonProject(rootPath)) {
-			techs = ["Python"];
+			techs = getTechPython(rootPath);
+			languageV = await getLanguagesVersions(rootPath, [
+				{ language: "git", command: "git --version" },
+				{ language: "python", command: "python --version" },   
+				{ language: "python3", command: "python3 --version" }, 
+				{ language: "pip", command: "pip --version" },
+				{ language: "pip3", command: "pip3 --version" }
+			]);
+			env = readEnvVariable(rootPath);
+
 		} else if (isJavaProject(rootPath)) {
 			if (fs.existsSync(path.join(rootPath, "pom.xml"))) {
 				const { version: mavenVersion, deps } = await getMavenInfo(rootPath);

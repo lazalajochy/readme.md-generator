@@ -32,7 +32,15 @@ export const DEP_TO_TECH: { [key: string]: string } = {
     "axios": "Axios",
     "lodash": "Lodash",
     "cors": "CORS",
-    "body-parser": "body-parser"
+    "body-parser": "body-parser",
+    // Python Ecosystem
+    "flask": "Flask",
+    "selenium": "Selenium",
+    "pandas": "Pandas",
+    "gspread": "Gspread",
+    "fastapi": "FastAPI",
+    "django": "Django",
+    "sqlalchemy": "SQLAlchemy"
 };
 
 

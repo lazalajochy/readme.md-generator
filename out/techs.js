@@ -35,7 +35,15 @@ exports.DEP_TO_TECH = {
     "axios": "Axios",
     "lodash": "Lodash",
     "cors": "CORS",
-    "body-parser": "body-parser"
+    "body-parser": "body-parser",
+    // Python Ecosystem
+    "flask": "Flask",
+    "selenium": "Selenium",
+    "pandas": "Pandas",
+    "gspread": "Gspread",
+    "fastapi": "FastAPI",
+    "django": "Django",
+    "sqlalchemy": "SQLAlchemy"
 };
 exports.INFRA_TOOLS = {
     // Contenedores y orquestación

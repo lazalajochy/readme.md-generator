@@ -46,6 +46,7 @@ const readmeBuilder_1 = require("./readmeBuilder");
 const javaproyect_1 = require("./javaproyect");
 const languajeVersion_1 = require("./languajeVersion");
 const readEnv_1 = require("./readEnv");
+const pythonproyect_1 = require("./pythonproyect");
 function activate(context) {
     let disposable = vscode.commands.registerCommand("readme-generator.createReadme", async () => {
         const workspaceFolders = vscode.workspace.workspaceFolders;
@@ -86,7 +87,15 @@ function activate(context) {
             env = (0, readEnv_1.readEnvVariable)(rootPath);
         }
         else if ((0, detectors_1.isPythonProject)(rootPath)) {
-            techs = ["Python"];
+            techs = (0, pythonproyect_1.getTechPython)(rootPath);
+            languageV = await (0, languajeVersion_1.getLanguagesVersions)(rootPath, [
+                { language: "git", command: "git --version" },
+                { language: "python", command: "python --version" },
+                { language: "python3", command: "python3 --version" },
+                { language: "pip", command: "pip --version" },
+                { language: "pip3", command: "pip3 --version" }
+            ]);
+            env = (0, readEnv_1.readEnvVariable)(rootPath);
         }
         else if ((0, detectors_1.isJavaProject)(rootPath)) {
             if (fs.existsSync(path.join(rootPath, "pom.xml"))) {
