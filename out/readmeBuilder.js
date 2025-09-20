@@ -32,9 +32,14 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.buildReadme = buildReadme;
 const path = __importStar(require("path"));
+const buildTable_1 = __importDefault(require("./buildTable"));
+const scriptTable_1 = require("./scriptTable");
 function section(title, content) {
     return content && content.trim() !== "" ? `\n## ${title}\n${content}\n` : "";
 }
@@ -44,9 +49,10 @@ ${section("🏷 Version", data.version !== "Not defined" ? data.version : "")}
 ${section("📜 License", data.license !== "Not defined" ? data.license : "")}
 ${section("🛠️ Basic requirements", data.languageV.length ? data.languageV.map(s => `- \`${s}\``).join("\n") : "")}
 ${section("📖 Description", "⚡ Replace this section with a short description of your project (what it does, why it exists)")}
-${section("⚙️ Prod stack technologies", data.techs.length ? data.techs.join(", ") : "")}
-${section("⚙️ Dev stack technologies", data.devDep.length ? data.devDep.join(", ") : "")}
-${section("📜 Scripts available", data.scripts.length ? data.scripts.map(s => `- \`${s}\``).join("\n") : "")}
+${data.devDep.length ? (0, buildTable_1.default)(data.techs, "⚙️ Prod stack technologies") : ""}
+${data.devDep.length ? (0, buildTable_1.default)(data.devDep, "⚙️ Dev stack technologies") : ""}
+${data.scripts.length ? (0, scriptTable_1.buildScriptsTable)(data.scripts) : ""}
+
 ${section("Env variable", data.env.length ? data.env.map(s => `- \`${s}\``).join("\n") : "")}
 ${section("🌐 Deployment & Infrastructure", data.infraTools.length ? data.infraTools.join(", ") : "")}
 ${data.repo && data.repo !== "No repository found" ?

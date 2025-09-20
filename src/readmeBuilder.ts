@@ -1,5 +1,7 @@
 import * as path from "path";
 import { ReadmeData } from "./interface";
+import buildDepTable from "./buildTable";
+import { buildScriptsTable } from "./scriptTable";
 
 function section(title: string, content: string): string {
   return content && content.trim() !== "" ? `\n## ${title}\n${content}\n` : "";
@@ -13,9 +15,10 @@ ${section("🛠️ Basic requirements",
   data.languageV.length ? data.languageV.map(s => `- \`${s}\``).join("\n") : ""
 )}
 ${section("📖 Description", "⚡ Replace this section with a short description of your project (what it does, why it exists)")}
-${section("⚙️ Prod stack technologies", data.techs.length ? data.techs.join(", ") : "")}
-${section("⚙️ Dev stack technologies", data.devDep.length ? data.devDep.join(", ") : "")}
-${section("📜 Scripts available", data.scripts.length ? data.scripts.map(s => `- \`${s}\``).join("\n") : "")}
+${data.devDep.length ? buildDepTable(data.techs, "⚙️ Prod stack technologies") : ""}
+${data.devDep.length ? buildDepTable(data.devDep, "⚙️ Dev stack technologies") : ""}
+${data.scripts.length ? buildScriptsTable(data.scripts) : ""}
+
 ${section("Env variable", data.env.length ? data.env.map(s => `- \`${s}\``).join("\n") : "")}
 ${section("🌐 Deployment & Infrastructure", data.infraTools.length ? data.infraTools.join(", ") : "")}
 ${data.repo && data.repo !== "No repository found" ? 
