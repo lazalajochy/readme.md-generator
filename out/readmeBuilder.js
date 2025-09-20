@@ -51,7 +51,6 @@ ${section("Env variable", data.env.length ? data.env.map(s => `- \`${s}\``).join
 ${section("🌐 Deployment & Infrastructure", data.infraTools.length ? data.infraTools.join(", ") : "")}
 ${data.repo && data.repo !== "No repository found" ?
         `\n## Clone repository\n\`\`\`bash\ngit clone ${data.repo}\n\`\`\`\n` : ""}
-${section("📂 Project structure", data.structure)}
-`;
+${section("📂 Project structure", "```\n" + data.structure + "\n```")}`;
 }
 //# sourceMappingURL=readmeBuilder.js.map
