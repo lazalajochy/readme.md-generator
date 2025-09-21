@@ -76,6 +76,8 @@ vsce publish patch
 # Or publish with specific version bump
 vsce publish minor
 vsce publish major
+```
+
 
 
 ### Install from VS Code Marketplace
