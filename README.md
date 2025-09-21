@@ -57,18 +57,6 @@
 - Git
 - VS Code
 
-### Install from VS Code Marketplace
-
-<div align="center">
-  <a href="https://marketplace.visualstudio.com/items?itemName=jochylazala.readme-generator-jochylazala">
-    <img src="https://img.shields.io/badge/Download-VS%20Code%20Extension-007ACC.svg?style=for-the-badge&logo=visual-studio-code"/>
-  </a>
-  <br>
-  <img src="https://img.shields.io/visual-studio-marketplace/d/jochylazala.readme-generator-jochylazala?style=flat-square&label=Downloads" alt="Downloads"/>
-</div>
-
----
-
 
 ## 🚀 Publishing Extension
 
@@ -90,6 +78,19 @@ vsce publish minor
 vsce publish major
 ```
 
+
+
+### Install from VS Code Marketplace
+
+<div align="center">
+  <a href="https://marketplace.visualstudio.com/items?itemName=jochylazala.readme-generator-jochylazala">
+    <img src="https://img.shields.io/badge/Download-VS%20Code%20Extension-007ACC.svg?style=for-the-badge&logo=visual-studio-code"/>
+  </a>
+  <br>
+  <img src="https://img.shields.io/visual-studio-marketplace/d/jochylazala.readme-generator-jochylazala?style=flat-square&label=Downloads" alt="Downloads"/>
+</div>
+
+---
 
 ```bash
 # Install the extension directly
