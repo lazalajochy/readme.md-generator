@@ -36,21 +36,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getFolderStructure = getFolderStructure;
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
-const ignoredFolders = ["node_modules", ".git", ".gitignore", ".prettierrc", ".eslintrc.js", ".vscode", "dist", "build", ".idea", ".env"];
-function getFolderStructure(dir, depth = 0) {
-    const files = fs.readdirSync(dir).filter(f => !ignoredFolders.includes(f));
+const ignored = [
+    "node_modules", ".git", ".vscode", "dist", "build", ".idea",
+    ".DS_Store", ".firebase", "package-lock.json",
+    ".gitignore", ".prettierrc", ".firebaserc", ".eslintrc.js", ".env", ".cache"
+];
+function getFolderStructure(dir, prefix = "", depth = 0, maxDepth = 2) {
+    const files = fs.readdirSync(dir).filter(f => !ignored.includes(f));
     let result = "";
-    for (const file of files) {
+    files.forEach((file, index) => {
         const filePath = path.join(dir, file);
         const stats = fs.statSync(filePath);
-        const indent = "  ".repeat(depth);
-        if (stats.isDirectory()) {
-            result += `${indent}📂 ${file}\n${getFolderStructure(filePath, depth + 1)}`;
+        const isLast = index === files.length - 1;
+        const pointer = isLast ? "└── " : "├── ";
+        result += prefix + pointer + file + "\n";
+        if (stats.isDirectory() && depth < maxDepth - 1) {
+            const newPrefix = prefix + (isLast ? "    " : "│   ");
+            result += getFolderStructure(filePath, newPrefix, depth + 1, maxDepth);
         }
-        else {
-            result += `${indent}📄 ${file}\n`;
-        }
-    }
+    });
     return result;
 }
 //# sourceMappingURL=structure.js.map
