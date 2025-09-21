@@ -70,3 +70,25 @@
 ```bash
 # Install the extension directly
 code --install-extension jochylazala.readme-generator-jochylazala
+
+
+---
+
+## 🚀 Publishing Extension
+
+```bash
+# Install vsce globally (if not installed)
+npm install -g @vscode/vsce
+
+# Login with your publisher account (first time only)
+vsce login <publisher-name>
+
+# Package the extension into a .vsix file
+vsce package
+
+# Publish a new version (auto-increment patch)
+vsce publish patch
+
+# Or publish with specific version bump
+vsce publish minor
+vsce publish major
