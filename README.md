@@ -67,12 +67,8 @@
   <img src="https://img.shields.io/visual-studio-marketplace/d/jochylazala.readme-generator-jochylazala?style=flat-square&label=Downloads" alt="Downloads"/>
 </div>
 
-```bash
-# Install the extension directly
-code --install-extension jochylazala.readme-generator-jochylazala
-
-
 ---
+
 
 ## 🚀 Publishing Extension
 
@@ -92,3 +88,11 @@ vsce publish patch
 # Or publish with specific version bump
 vsce publish minor
 vsce publish major
+```
+
+
+```bash
+# Install the extension directly
+code --install-extension jochylazala.readme-generator-jochylazala
+
+
